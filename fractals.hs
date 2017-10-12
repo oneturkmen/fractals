@@ -1,4 +1,6 @@
 type Point = (Float, Float)
+type Image color = Point -> color
+type Grid a = [[a]]
 
 next :: Point -> Point -> Point
 next (u, v) (x, y) = (x * x - y * y + u, 2 * x * y + v)
