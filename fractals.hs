@@ -38,3 +38,57 @@ chooseColor :: [color] -> [Point] -> color
 chooseColor palette = (palette!!).length.take n.takeWhile fairlyClose
                       where n = length palette - 1
 
+-- * Combine fractal generator with palette
+fracImage :: (Point -> [Point]) -> [color] -> Image color
+fracImage fractal palette = chooseColor palette . fractal
+
+-- * Describe grid that is of size 'r' by 'c'
+-- * where r = number of rows
+-- *       c = number of columns
+grid :: Int -> Int -> Point -> Point -> Grid Point
+grid c r (xmin, ymin) (xmax, ymax) 
+  = [[(x,y) | x <- for c xmin xmax] | y <- for r ymin ymax]
+  
+-- * Define auxiliary function to take care of 
+-- * evenly spaced values for x and y
+for :: Int -> Float -> Float -> [Float]
+for n min max = take n [min, min + delta ..]
+                where delta = (max - min) / fromIntegral (n - 1)
+                
+-- * Sampling - iterate over the list of lists
+sample :: Grid Point -> Image color -> Grid color
+sample points image = map (map image) points
+
+-- * Render
+draw :: Grid Point -> (Point -> [Point]) -> [color] -> (Grid color -> image) -> image
+draw points fractal palette render
+  = render (sample points (fracImage fractal palette))
+
+---------------------------------------------------------------
+  
+-- * Character-based images
+charPalette :: [Char]
+charPalette = " ,.'\"~:;o-!|?/<>X+={^O#%&@8*$"
+
+-- * Use 'unlines' to process the rendering
+charRender :: Grid Char -> IO ()
+charRender = putStr . unlines
+
+-- * Generate our first figure (Mandelbrot set)!
+figure1 = draw points mandelbrot charPalette charRender
+          where points = grid 75 40 (-2.25, -1.5) (0.75, 1.5)
+
+-- * Julia set setup
+julia :: Point -> Point -> [Point]
+julia c = iterate (next c)
+
+-- * Generate our second figure (Julia set)!
+figure2 = draw points (julia (0.32, 0.043)) charPalette charRender
+          where points = grid 75 40 ((-1.5), (-1.5)) (1.5, 1.5)
+
+---------------------------------------------------------------
+
+-- * Drawing with graphics
+-- rgcPalette     :: [RGB]
+-- graphicsWindow :: Int -> Int -> IO Window
+-- setPixel       :: Window -> Int -> Int -> RGB -> IO ()
