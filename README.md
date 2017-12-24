@@ -8,7 +8,7 @@ Paper [here](http://web.cecs.pdx.edu/~mpj/pubs/composing-fractals.pdf)
 
 Just type `./fractals`
 
-*image to be uploaded*
+![fractal rendered image](fractalz.png)
 
 #### Character rendering
 
