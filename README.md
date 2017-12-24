@@ -4,7 +4,13 @@ Paper [here](http://web.cecs.pdx.edu/~mpj/pubs/composing-fractals.pdf)
 
 ### Example
 
-Character rendering
+#### Using OpenGL (GLUT)
+
+Just type `./fractals`
+
+*image to be uploaded*
+
+#### Character rendering
 
 ```
 > figure1
