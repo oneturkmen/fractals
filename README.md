@@ -1,4 +1,4 @@
-## Fractls
+## Fractals
 
 Implementation of the ["Composing Fractals" by Mark P. Jones](http://web.cecs.pdx.edu/~mpj/pubs/composing-fractals.pdf).
 
